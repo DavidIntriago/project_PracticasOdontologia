@@ -32,16 +32,14 @@ model Campana {
   fechaFin DateTime
   estado EstadoCampana
   numeroVacantes Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
   PeriodoAcademico PeriodoAcademico @relation(fields: [idPeriodoAcademico], references: [id])
   idPeriodoAcademico Int
   Cita Cita[]
   Servicio Servicio[]
-
   EstudianteOnCampana EstudianteOnCampana[]
-
   PacienteOnCampana PacienteOnCampana[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Cita {
@@ -50,8 +48,6 @@ model Cita {
   hora   DateTime
   lugar  String
   estado EstadoCita
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
   Campana Campana @relation(fields: [idCampana], references: [id])
   idCampana Int
   Servicio Servicio @relation(fields: [idServicio], references: [id])
@@ -60,6 +56,11 @@ model Cita {
   idEstudiante Int
   Paciente Paciente @relation(fields: [idPaciente], references: [id])
   idPaciente Int
+  Tratamiento Tratamiento @relation(fields: [idTratamiento], references: [id])
+  idTratamiento Int
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Servicio {
@@ -67,21 +68,22 @@ model Servicio {
   nombre String
   descripcion String?
   duracion Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
   Campana Campana @relation(fields: [idCampana], references: [id])
   idCampana Int
-
   Cita Cita?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model PeriodoAcademico {
   id     Int       @id @default(autoincrement())
   fechaInicio DateTime
   fechaFin DateTime
+  Campana Campana[]
+  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Campana Campana[]
 }
 
 model Estudiante {
@@ -92,12 +94,11 @@ model Estudiante {
   telefono String
   foto String
   cicloAcademico String
+  EstudianteOnCampana EstudianteOnCampana[]
+  Cita Cita[]
+  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  EstudianteOnCampana EstudianteOnCampana[]
-
-  Cita Cita[]
 }
 
 model EstudianteOnCampana {
@@ -116,13 +117,12 @@ model Paciente {
   apellido String
   correo String
   telefono String
-  direccion String
+  direccion String?
+  Cita Cita[]
+  PacienteOnCampana PacienteOnCampana[]
+  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  Cita Cita[]
-
-  PacienteOnCampana PacienteOnCampana[]
 }
 
 model PacienteOnCampana {
@@ -140,6 +140,8 @@ model Tratamiento {
   descripcion String
   fecha DateTime
   duracion Int
+  Cita Cita[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
