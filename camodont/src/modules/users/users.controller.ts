@@ -7,9 +7,16 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+
+  // ALUMNOOOOOO
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
+  }
+
+  @Post('asignarCampana/:idCampana')
+  asignarCampana(@Body()  id: ("id") , @Param('idCampana') idCampana: string) {
+    return this.usersService.asignarCamapana(parseInt(id), +idCampana);
   }
 
   @Get()
