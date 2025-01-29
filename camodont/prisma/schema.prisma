@@ -27,6 +27,7 @@ enum EstadoCampana {
 
 model Campana {
   id     Int       @id @default(autoincrement())
+  external_id String @default(uuid())
   nombre String
   fechaInicio DateTime
   fechaFin DateTime
@@ -35,15 +36,16 @@ model Campana {
   PeriodoAcademico PeriodoAcademico @relation(fields: [idPeriodoAcademico], references: [id])
   idPeriodoAcademico Int
   Cita Cita[]
-  Servicio Servicio[]
-  EstudianteOnCampana EstudianteOnCampana[]
-  PacienteOnCampana PacienteOnCampana[]
+  Servicio Servicio[] @relation("CampanaServicio")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  UsuarioCampana UsuarioCampana[]
 }
 
 model Cita {
   id     Int       @id @default(autoincrement())
+  external_id String @default(uuid())
   fecha  DateTime
   hora   DateTime
   lugar  String
@@ -52,10 +54,8 @@ model Cita {
   idCampana Int
   Servicio Servicio @relation(fields: [idServicio], references: [id])
   idServicio Int @unique
-  Estudiante Estudiante @relation(fields: [idEstudiante], references: [id])
-  idEstudiante Int
-  Paciente Paciente @relation(fields: [idPaciente], references: [id])
-  idPaciente Int
+  Usuario Usuario @relation(fields: [idUsuario], references: [id])
+  idUsuario Int
   Tratamiento Tratamiento @relation(fields: [idTratamiento], references: [id])
   idTratamiento Int
   
@@ -68,12 +68,12 @@ model Servicio {
   nombre String
   descripcion String?
   duracion Int
-  Campana Campana @relation(fields: [idCampana], references: [id])
-  idCampana Int
   Cita Cita?
-  
+  Campana Campana[] @relation("CampanaServicio")
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
 }
 
 model PeriodoAcademico {
@@ -86,57 +86,54 @@ model PeriodoAcademico {
   updatedAt DateTime @updatedAt
 }
 
-model Estudiante {
+model Rol {
   id     Int       @id @default(autoincrement())
   nombre String
-  apellido String
-  correoInstitucional String
-  telefono String
-  foto String
-  cicloAcademico String
-  EstudianteOnCampana EstudianteOnCampana[]
-  Cita Cita[]
+  Usuario Usuario[]
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model EstudianteOnCampana {
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Estudiante Estudiante @relation(fields: [idEstudiante], references: [id])
-  idEstudiante Int
-  Campana Campana @relation(fields: [idCampana], references: [id])
-  idCampana Int
-  @@id([idEstudiante, idCampana])
-}
-
-model Paciente {
+model Usuario {
   id     Int       @id @default(autoincrement())
+  external_id String  @default(uuid())
+  rol Rol @relation(fields: [idRol], references: [id])
+  idRol Int
   nombre String
   apellido String
   correo String
-  telefono String
+  clave String
+  telefono String?
+  foto String?
   direccion String?
+  cicloAcademico String?
   Cita Cita[]
-  PacienteOnCampana PacienteOnCampana[]
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  UsuarioCampana UsuarioCampana[]
+
 }
 
-model PacienteOnCampana {
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Paciente Paciente @relation(fields: [idPaciente], references: [id])
-  idPaciente Int
+model UsuarioCampana {
+  id     Int       @id @default(autoincrement())
+  Usuario Usuario @relation(fields: [idUsuario], references: [id])
+  idUsuario Int
   Campana Campana @relation(fields: [idCampana], references: [id])
   idCampana Int
-  @@id([idPaciente, idCampana])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
+
+
+
 
 model Tratamiento {
   id     Int       @id @default(autoincrement())
+  external_id String  @default(uuid())
   descripcion String
   fecha DateTime
   duracion Int
