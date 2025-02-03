@@ -3,6 +3,7 @@ import { PrismaService } from 'src/db/prisma/prisma.service';
 
 @Injectable()
 export class RolService {
+  
   constructor(private prisma: PrismaService) {}
 
   async revisionRol() {

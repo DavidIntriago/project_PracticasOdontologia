@@ -5,6 +5,8 @@ import { PrismaService } from 'src/db/prisma/prisma.service';
 
 @Module({
   controllers: [PeriodController],
-  providers: [PeriodService, PrismaService],
+  providers: [PeriodService, {provide: PrismaService,
+    useFactory: () => PrismaService.getInstance()
+  }],
 })
 export class PeriodModule {}

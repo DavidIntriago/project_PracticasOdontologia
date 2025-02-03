@@ -5,6 +5,8 @@ import { PrismaService } from "../../db/prisma/prisma.service";
 
 @Module({
   controllers: [CampaignController],
-  providers: [CampaignService, PrismaService],
+  providers: [CampaignService, {provide: PrismaService,
+    useFactory: () => PrismaService.getInstance()
+  }],
 })
 export class CampaignModule {}
