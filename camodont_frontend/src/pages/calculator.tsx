@@ -20,7 +20,7 @@ import OvulationCalculator from '../../components/calculators/OvulationCalculato
 import DiabetesRiskCalculator from '../../components/calculators/DiabetesRiskCalculator';
 import BmiPercentileCalculator from '../../components/calculators/BmiPercentileCalculator';
 import QuitSmokingSavingsCalculator from '../../components/calculators/QuitSmokingSavingsCalculator';
-import Footer from '../../components/Footer';
+import Footer from '../components/Footer';
 
 const Calculator: NextPage = () => {
   return (

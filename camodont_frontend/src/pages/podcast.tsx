@@ -17,7 +17,7 @@ import {
   Image,
 } from '@chakra-ui/react';
 import NavBar from '@/src/components/NavBar';
-import Footer from '@/components/Footer';
+import Footer from '@/src/components/Footer';
 
 type Podcast = {
   collectionId: number;

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { Container, VStack, Text, Heading, Box, Avatar, Button, Link } from '@chakra-ui/react';
 import { FaCalendarAlt } from 'react-icons/fa';
 import NavBar from '../components/NavBar';
-import Footer from '../../components/Footer';
+import Footer from '../components/Footer';
 
 const AboutPage: React.FC = () => {
   const router = useRouter();

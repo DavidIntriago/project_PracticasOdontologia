@@ -9,25 +9,25 @@ interface IFeature {
 
 const features: IFeature[] = [
   {
-    heading: 'Easy Appointments',
+    heading: 'Atención Personalizada',
     content:
-      'Book appointments with ease using our intuitive scheduling system, available 24/7.',
+      'Recibe atención personalizada y de calidad de nuestros médicos y especialistas.',
     icon: MdEventAvailable,
   },
   {
-    heading: 'Quick Consultations',
-    content: 'Get quick consultations with experienced doctors to discuss your health concerns.',
+    heading: 'Consultas Rápidas',
+    content: 'Agenda consultas rápidas y sin demoras con nuestros practicantes.',
     icon: MdAssignment,
   },
   {
-    heading: 'Expert Medical Care',
+    heading: 'Supervisión Profesional',
     content:
-      'Access personalized and expert medical care from our team of experienced doctors and specialists.',
+      'Consultas supervisadas por medicos especialistas en el area.',
     icon: MdLocalHospital,
   },
   {
-    heading: 'Access Medical Resources',
-    content: 'Access a library of medical resources, FAQs, and health tips.',
+    heading: 'Tratamientos y atención',
+    content: 'Agenda consultas y recibe tratamientos y atencion de calidad.',
     icon: MdLibraryBooks,
   },
 ];

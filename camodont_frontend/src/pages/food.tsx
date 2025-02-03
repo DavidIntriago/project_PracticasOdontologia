@@ -23,7 +23,7 @@ import {
 } from '@chakra-ui/react';
 import { SearchIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import NavBar from '@/src/components/NavBar';
-import Footer from '@/components/Footer';
+import Footer from '@/src/components/Footer';
 
 type Product = {
   code: string;

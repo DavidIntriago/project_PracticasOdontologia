@@ -21,7 +21,7 @@ import {
 } from '@chakra-ui/react';
 import { SearchIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import NavBar from '../components/NavBar';
-import Footer from '../../components/Footer';
+import Footer from '../components/Footer';
 
 const WikipediaSearch: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');

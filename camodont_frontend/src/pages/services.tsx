@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { IoMdMedkit, IoIosMedkit, IoIosHeart, IoIosBody } from 'react-icons/io';
 import NavBar from '../components/NavBar';
-import Footer from '../../components/Footer';
+import Footer from '../components/Footer';
 
 const Services = () => {
   const { colorMode } = useColorMode();
