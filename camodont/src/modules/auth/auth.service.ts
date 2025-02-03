@@ -17,7 +17,7 @@ constructor (private prisma: PrismaService) {}
     if (!usuario) {
       return { error: 'Usuario no encontrado' };
     }
-    if (usuario.clave === login.clave) {
+    if (usuario.clave != login.clave) {
       return { error: 'Clave incorrecta' };
     }else{
     return usuario;

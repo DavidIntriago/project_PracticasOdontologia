@@ -22,7 +22,8 @@ const Login = () => {
   const [clave, setclave] = useState("");
 
   const handleLogin = () => {
-    post_api("auth", { correo, clave }).then((response: any) => {
+    post_api("auth", { correo, clave }).then((response) => {
+      console.log(clave);
       console.log(response);
       if (!response) {
         alert(response);
@@ -91,5 +92,6 @@ const Login = () => {
     </>
   );
 };
+
 
 export default Login;

@@ -16,6 +16,7 @@ export async function post_api(url, data) {
     },
     body: JSON.stringify(data),
   });
+  console.log(data);
   const res = await response.json();
   console.log(res);
   return res;
@@ -23,4 +24,20 @@ export async function post_api(url, data) {
     } catch (error) {
         console.log(error);
     }
+}
+
+export async function get_api(url) {
+  try {
+    const response = await fetch(`${URL}/${url}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const res = await response.json();
+    console.log(res);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Flex,
@@ -12,32 +12,36 @@ import {
 import { IoMdMedkit, IoIosMedkit, IoIosHeart, IoIosBody } from 'react-icons/io';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
-
+import { get_api } from '../hooks/Conexion';
+import Login from '../components/Login';
 const Services = () => {
   const { colorMode } = useColorMode();
+  const [services, setServices] = useState([]);
 
-  const services = [
-    {
-      title: 'Medical Consultation',
-      description: 'Expert medical advice and consultation for your health concerns.',
-      icon: <IoMdMedkit size="2em" />,
-    },
-    {
-      title: 'Diagnostic Tests',
-      description: 'Comprehensive diagnostic tests to accurately assess your health condition.',
-      icon: <IoIosMedkit size="2em" />,
-    },
-    {
-      title: 'Specialized Treatments',
-      description: 'Tailored treatment plans for various medical conditions.',
-      icon: <IoIosHeart size="2em" />,
-    },
-    {
-      title: 'Preventive Care',
-      description: 'Guidance and services to maintain good health and prevent illnesses.',
-      icon: <IoIosBody size="2em" />,
-    },
-  ];
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const apiServices = await get_api("services");
+        console.log(apiServices);
+        const mappedServices = apiServices.map((service, index) => ({
+          title: service.nombre,
+          description: service.descripcion,
+          icon: getIcon(index),
+        }));
+
+        setServices(mappedServices);
+      } catch (error) {
+        console.error("Error al obtener los servicios:", error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  function getIcon(index) {
+    const icons = [<IoMdMedkit />];
+    return icons[index % icons.length];
+  }
 
   return (
     <Box>
@@ -45,16 +49,13 @@ const Services = () => {
       <Box py={16} mr={16} ml={16}>
         <Flex direction="column" align="center" mb={10}>
           <Heading size="xl" color={colorMode === 'light' ? 'gray.700' : 'white'}>
-            Our Services
+            Nuestros Servicios
           </Heading>
-          <Text mt={2} color={colorMode === 'light' ? 'gray.600' : 'gray.400'}>
-            Quality healthcare services tailored to your needs.
-          </Text>
         </Flex>
         <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={10}>
-          {services.map((service) => (
+          {services.map((service, index) => (
             <Box
-              key={service.title}
+              key={index}
               bg={colorMode === 'light' ? 'white' : 'gray.700'}
               p={6}
               borderRadius="lg"
@@ -73,16 +74,7 @@ const Services = () => {
             </Box>
           ))}
         </SimpleGrid>
-        <Flex justify="center" mt={8}>
-          <Button
-            as={Link}
-            href="/#BookAppointment" 
-            colorScheme="teal"
-            size="lg"
-          >
-            Book Appointment
-          </Button>
-        </Flex>
+        
       </Box>
       <Footer />
     </Box>
@@ -90,4 +82,3 @@ const Services = () => {
 };
 
 export default Services;
-
