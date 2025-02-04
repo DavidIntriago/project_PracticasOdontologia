@@ -10,15 +10,33 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import { FaArrowLeft } from "react-icons/fa";
+import { get_api, post_api } from "../hooks/Conexion";
+import { get } from "../hooks/SessionUtil";
 
 const ServiceDetails = ({ service, onClose }) => {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
+  const [lugar, setLugar] = useState("");
+  console.log(service);
+  const handleSubmit = async () => {
+    const user= await get("id");
+    
+    const data = {
+      fecha: "2025-02-03T12:30:00Z",
+      hora: "2025-02-03T12:30:00Z",
+      lugar: lugar,
+      estado: "PENDIENTE",
+      idServicio: service.id,
+      idUsuario: parseInt(user),
+    };
+    post_api("cita", data).then((response) => {
+      console.log(response);
+      if (response) {
+        alert("Cita solicitada con éxito");
+        onClose();
+      }
+    });
 
-  const handleSubmit = () => {
-    console.log(`Cita solicitada para: ${service.title} el ${date} a las ${time}`);
-    alert(`Cita solicitada para: ${service.title} el ${date} a las ${time}`);
-    onClose(); // Cierra el componente después de solicitar la cita
   };
 
   return (
@@ -42,9 +60,10 @@ const ServiceDetails = ({ service, onClose }) => {
         <Text my={4}>Duracion estimada: {service.duracion} horas</Text>
 
         {/* Selección de fecha y hora */}
-        <VStack spacing={3}>
+        <VStack spacing={4}>
           <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
           <Input type="time" value={time} onChange={(e) => setTime(e.target.value)} />
+          <Input type="text" value={lugar} onChange={(e) => setLugar(e.target.value)}/>
         </VStack>
 
         {/* Botones de acción */}

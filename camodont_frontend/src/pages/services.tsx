@@ -34,6 +34,7 @@ const Services = () => {
           title: service.nombre,
           description: service.descripcion,
         }));
+        console.log(mappedServices);
 
         setServices(mappedServices);
       } catch (error) {

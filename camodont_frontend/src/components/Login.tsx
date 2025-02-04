@@ -42,7 +42,7 @@ const Login = () => {
         alert("Bienvenid@ "+response.nombre);
 
         save("rol", response.idRol);
-        save("external_id", response.external_id);
+        save("id", response.id);
         router.push("/indexUsers"); 
 
         return;
