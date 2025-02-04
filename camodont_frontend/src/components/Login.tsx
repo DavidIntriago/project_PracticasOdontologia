@@ -15,11 +15,13 @@ import {
 } from "@chakra-ui/react";
 import {post_api} from "../hooks/Conexion";
 import { save } from "../hooks/SessionUtil";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
   const { isOpen, onOpen, onClose } = useDisclosure(); // Hook para controlar el modal
   const [correo, setcorreo] = useState("");
   const [clave, setclave] = useState("");
+  const router = useRouter();
 
   const handleLogin = () => {
     post_api("auth", { correo, clave }).then((response) => {
@@ -41,6 +43,8 @@ const Login = () => {
 
         save("rol", response.idRol);
         save("external_id", response.external_id);
+        router.push("/indexUsers"); 
+
         return;
       }
     }});

@@ -6,14 +6,21 @@ import {
   Text,
   SimpleGrid,
   useColorMode,
-  Button,
-  Link,
 } from '@chakra-ui/react';
-import { IoMdMedkit, IoIosMedkit, IoIosHeart, IoIosBody } from 'react-icons/io';
+import { 
+  IoMdMedkit, 
+  IoIosMedkit, 
+  IoIosHeart, 
+  IoIosBody, 
+  IoIosPulse, 
+  IoIosThermometer, 
+  IoIosFlask, 
+  IoIosFitness 
+} from 'react-icons/io';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import { get_api } from '../hooks/Conexion';
-import Login from '../components/Login';
+
 const Services = () => {
   const { colorMode } = useColorMode();
   const [services, setServices] = useState([]);
@@ -23,10 +30,9 @@ const Services = () => {
       try {
         const apiServices = await get_api("services");
         console.log(apiServices);
-        const mappedServices = apiServices.map((service, index) => ({
+        const mappedServices = apiServices.map((service) => ({
           title: service.nombre,
           description: service.descripcion,
-          icon: getIcon(index),
         }));
 
         setServices(mappedServices);
@@ -38,10 +44,7 @@ const Services = () => {
     fetchData();
   }, []);
 
-  function getIcon(index) {
-    const icons = [<IoMdMedkit />];
-    return icons[index % icons.length];
-  }
+ 
 
   return (
     <Box>
@@ -62,9 +65,8 @@ const Services = () => {
               borderWidth="1px"
               borderColor={colorMode === 'light' ? 'gray.200' : 'gray.600'}
             >
-              <Flex justify="center" mb={4}>
-                {service.icon}
-              </Flex>
+              <Flex justify="center" mb={4} fontSize="3xl" color="teal.500">
+              <IoMdMedkit />              </Flex>
               <Heading size="md" mb={2} color={colorMode === 'light' ? 'gray.800' : 'white'}>
                 {service.title}
               </Heading>
@@ -74,7 +76,6 @@ const Services = () => {
             </Box>
           ))}
         </SimpleGrid>
-        
       </Box>
       <Footer />
     </Box>

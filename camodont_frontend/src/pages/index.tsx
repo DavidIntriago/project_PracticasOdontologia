@@ -20,13 +20,11 @@ const Home: NextPage = () => {
       <main>
         <Box as="main">
         <ContactInfo />
-        <SessionProvider>
-
-          <NavBar />
+        
+        <NavBar />
           <Hero />
           <AppointmentFeatures />
           <Footer />
-          </SessionProvider>
 
         </Box>
       </main>
