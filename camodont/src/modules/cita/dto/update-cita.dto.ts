@@ -1,4 +1,4 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateCitaDto } from './create-cita.dto';
+import  {CreateCitaDto}  from './create-cita.dto';
 
-export class UpdateCitaDto extends PartialType(CreateCitaDto) {}
+export type UpdateCitaDto = Partial<CreateCitaDto>;;

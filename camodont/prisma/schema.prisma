@@ -35,7 +35,7 @@ model Campana {
   numeroVacantes Int
   PeriodoAcademico PeriodoAcademico @relation(fields: [idPeriodoAcademico], references: [id])
   idPeriodoAcademico Int
-  Cita Cita[]
+  //Cita Cita[]
   Servicio Servicio[] @relation("CampanaServicio")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -50,14 +50,14 @@ model Cita {
   hora   DateTime
   lugar  String
   estado EstadoCita
-  Campana Campana @relation(fields: [idCampana], references: [id])
-  idCampana Int
+  //Campana Campana @relation(fields: [idCampana], references: [id])
+  //idCampana Int
   Servicio Servicio @relation(fields: [idServicio], references: [id])
   idServicio Int @unique
   Usuario Usuario @relation(fields: [idUsuario], references: [id])
   idUsuario Int
-  Tratamiento Tratamiento @relation(fields: [idTratamiento], references: [id])
-  idTratamiento Int
+  //Tratamiento Tratamiento @relation(fields: [idTratamiento], references: [id])
+  //idTratamiento Int
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -137,7 +137,7 @@ model Tratamiento {
   descripcion String
   fecha DateTime
   duracion Int
-  Cita Cita[]
+  //Cita Cita[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
