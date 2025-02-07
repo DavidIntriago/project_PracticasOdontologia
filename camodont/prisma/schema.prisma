@@ -35,7 +35,7 @@ model Campana {
   numeroVacantes Int
   PeriodoAcademico PeriodoAcademico @relation(fields: [idPeriodoAcademico], references: [id])
   idPeriodoAcademico Int
-  //Cita Cita[]
+  Cita Cita[]
   Servicio Servicio[] @relation("CampanaServicio")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -45,22 +45,25 @@ model Campana {
 
 model Cita {
   id     Int       @id @default(autoincrement())
-  external_id String @default(uuid())
   fecha  DateTime
-  hora   DateTime
+  hora   String
   lugar  String
   estado EstadoCita
-  //Campana Campana @relation(fields: [idCampana], references: [id])
-  //idCampana Int
-  Servicio Servicio @relation(fields: [idServicio], references: [id])
-  idServicio Int @unique
-  Usuario Usuario @relation(fields: [idUsuario], references: [id])
-  idUsuario Int
-  //Tratamiento Tratamiento @relation(fields: [idTratamiento], references: [id])
-  //idTratamiento Int
+  campana Campana @relation(fields: [idCampana], references: [id])
+  idCampana Int
+  servicio Servicio @relation(fields: [idServicio], references: [id])
+  idServicio Int
+  paciente  Usuario  @relation("Paciente", fields: [pacienteId], references: [id])
+  pacienteId Int
+  dentista  Usuario  @relation("Dentista", fields: [dentistaId], references: [id])
+  dentistaId Int
+  
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+
+  Tratamiento Tratamiento?
 }
 
 model Servicio {
@@ -68,12 +71,14 @@ model Servicio {
   nombre String
   descripcion String?
   duracion Int
-  Cita Cita?
+
   Campana Campana[] @relation("CampanaServicio")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+
+  Cita Cita[]
 }
 
 model PeriodoAcademico {
@@ -102,18 +107,19 @@ model Usuario {
   idRol Int
   nombre String
   apellido String
-  correo String
+  correo String @unique
   clave String
   telefono String?
   foto String?
   direccion String?
   cicloAcademico String?
-  Cita Cita[]
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   UsuarioCampana UsuarioCampana[]
+  citasComoPaciente Cita[] @relation("Paciente")
+  citasComoDentista Cita[] @relation("Dentista")
 
 }
 
@@ -133,13 +139,14 @@ model UsuarioCampana {
 
 model Tratamiento {
   id     Int       @id @default(autoincrement())
-  external_id String  @default(uuid())
   descripcion String
   fecha DateTime
   duracion Int
-  //Cita Cita[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  
+  Cita Cita @relation(fields: [idCita], references: [id])
+  idCita Int @unique
 }
 
