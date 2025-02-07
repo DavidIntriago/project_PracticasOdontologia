@@ -18,34 +18,17 @@ const AboutPage: React.FC = () => {
       <Container maxW="3xl" mt={10} mb={10} centerContent>
         <VStack spacing={10} align="stretch">
           <Heading size="xl" textAlign="center" color="gray.700">
-            About Dr. Smith
+            Carrera de Odontologia
           </Heading>
           <Box>
             <Avatar size="xl" name="Dr. Smith" src="https://images.pexels.com/photos/5327585/pexels-photo-5327585.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" mb={4} />
             <Text fontSize="lg" color="gray.600">
-              Dr. Jane Smith is a renowned expert in internal medicine with over
-              20 years of experience. Her dedication to patient care and
-              well-being has earned her a reputation as a trusted healthcare
-              provider.
+              Lorem ipsum dolor sit amet consectetur, adipisicing elit. In modi adipisci nesciunt? Id harum quia ducimus assumenda fugiat, molestiae nostrum commodi delectus aspernatur, iusto nobis ea necessitatibus quibusdam fuga. Nulla.
             </Text>
             <Text fontSize="lg" color="gray.600" mt={4}>
-              At Dr. Smith&apos;s Medical Center, we are committed to delivering
-              personalized and compassionate medical services to our patients.
-              Our state-of-the-art facilities and experienced medical staff ensure
-              that you receive the highest quality care.
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam qui rem maxime perferendis inventore, iusto suscipit explicabo! Assumenda possimus, ab repellat nihil, earum itaque ad laboriosam quibusdam sed at asperiores.
             </Text>
-            <Button
-              leftIcon={<FaCalendarAlt />}
-              colorScheme="teal"
-              variant="solid"
-              mt={6}
-              alignSelf="center"
-              onClick={handleBookAppointment}
-            >
-              <Link href='/#BookAppointment'>
-                Book Appointment
-              </Link>
-            </Button>
+            
           </Box>
         </VStack>
       </Container>

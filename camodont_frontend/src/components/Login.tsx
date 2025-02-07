@@ -18,7 +18,7 @@ import { save } from "../hooks/SessionUtil";
 import { useRouter } from "next/navigation";
 
 const Login = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure(); // Hook para controlar el modal
+  const { isOpen, onOpen, onClose } = useDisclosure(); 
   const [correo, setcorreo] = useState("");
   const [clave, setclave] = useState("");
   const router = useRouter();
@@ -75,7 +75,7 @@ const Login = () => {
           <ModalCloseButton />
           <ModalBody>
             <FormControl mb={4}>
-              <FormLabel>correo</FormLabel>
+              <FormLabel>Correo</FormLabel>
               <Input type="correo" value={correo} onChange={(e) => setcorreo(e.target.value)} />
             </FormControl>
             <FormControl>
