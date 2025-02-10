@@ -27,7 +27,7 @@ enum EstadoCampana {
 
 model Campana {
   id     Int       @id @default(autoincrement())
-  external_id String @default(uuid())
+  external_id String @default(uuid()) @unique
   nombre String
   fechaInicio DateTime
   fechaFin DateTime
@@ -68,6 +68,7 @@ model Cita {
 
 model Servicio {
   id     Int       @id @default(autoincrement())
+  external_id String @default(uuid()) @unique
   nombre String
   descripcion String?
   duracion Int
@@ -102,11 +103,11 @@ model Rol {
 
 model Usuario {
   id     Int       @id @default(autoincrement())
-  external_id String  @default(uuid())
+  external_id String  @default(uuid()) @unique
   rol Rol @relation(fields: [idRol], references: [id])
   idRol Int
-  nombre String
-  apellido String
+  nombre String?
+  apellido String?
   correo String @unique
   clave String
   telefono String?
