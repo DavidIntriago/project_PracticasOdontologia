@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateCampaignDto } from './dto/create-campaign.dto';
 import { UpdateCampaignDto } from './dto/update-campaign.dto';
 import { PrismaService } from 'src/db/prisma/prisma.service';
@@ -9,80 +9,137 @@ export class CampaignService {
 
 constructor (private prisma: PrismaService) {}
 
-async create(createCampaignDto: CreateCampaignDto) {
-  const { serviciosIds, idPeriodoAcademico, ...campaignData } = createCampaignDto;
+create(createCampaignDto: CreateCampaignDto) {
 
+  console.log(createCampaignDto);
+  const { serviciosId, idPeriodoAcademico, ...dataCampaign } = createCampaignDto; 
   return this.prisma.campana.create({
     data: {
-      ...campaignData,
+      ...dataCampaign,
+      fechaInicio: new Date(dataCampaign.fechaInicio),
+      fechaFin: new Date(dataCampaign.fechaFin),
+      
       PeriodoAcademico: {
-        connect: { id: idPeriodoAcademico },
+        connect: {
+          id: idPeriodoAcademico,
+        },
+
       },
-      // Relaciona los servicios usando connect
+      
       Servicio: {
-        connect: serviciosIds.map((id) => ({ id })),
+        connect: serviciosId.map((id) => ({
+          id,
+        })),
       },
     },
     include: {
-      Servicio: true, // Incluye los servicios relacionados en la respuesta
-      PeriodoAcademico: true, // Incluye el periodo académico relacionado
+      Servicio: true, 
+      PeriodoAcademico: true,
     },
   });
 }
 
+update(external_id: string, updateCampaignDto: UpdateCampaignDto) {
+  const { serviciosId, idPeriodoAcademico, ...dataCampaign } = updateCampaignDto;
+  return this.prisma.campana.update({
+    where: { external_id },
+    data: {
+      ...dataCampaign,
+      fechaInicio: new Date(dataCampaign.fechaInicio),
+      fechaFin: new Date(dataCampaign.fechaFin),
+      PeriodoAcademico: {
+        connect: {
+          id: idPeriodoAcademico,
+        },
+      },
+      Servicio: {
+        set: serviciosId.map((id) => ({
+          id,
+        })),
+      },
+    },
+    include: {
+      Servicio: true, 
+      PeriodoAcademico: true,
+    },
+  });
+}
+
+
   findAll() {
     return this.prisma.campana.findMany({
       include: {
-        Servicio: true, // Incluye los servicios relacionados en la respuesta
-        PeriodoAcademico: true, // Incluye el periodo académico relacionado
+        Servicio: true, 
+        PeriodoAcademico: true, 
       },
     }
     );
     
   }
 
-  findOne(id: number) {
+
+  findOne(external_id: string) {
     return this.prisma.campana.findUnique({
-      where: { id },
+      where: { external_id: external_id },
       include: {
-        Servicio: true, // Incluye los servicios relacionados en la respuesta
-        PeriodoAcademico: true, // Incluye el periodo académico relacionado
+        Servicio: true, 
+        PeriodoAcademico: true, 
       },
     });
   }
 
-  async update(id: number, updateCampaignDto: UpdateCampaignDto) {
-    const { serviciosIds, idPeriodoAcademico, ...campaignData } = updateCampaignDto;
   
-    return this.prisma.campana.update({
-      where: { id },
-      data: {
-        ...campaignData, // Actualiza campos básicos
-        // Manejo de PeriodoAcademico
-        PeriodoAcademico: idPeriodoAcademico
-          ? { connect: { id: idPeriodoAcademico } }
-          : undefined,
-        // Manejo de Servicio
-        Servicio: serviciosIds
-          ? { set: serviciosIds.map((id) => ({ id })) } // Reemplaza relaciones
-          : undefined,
-      },
-      include: {
-        Servicio: true, // Incluye datos de Servicio en la respuesta
-        PeriodoAcademico: true, // Incluye datos de PeriodoAcademico
-      },
-    });
-  }
   
 
 
 
-  remove(id: number) {
+  remove(external_id: string) {
     return this.prisma.campana.delete({
-      where: { id },
+      where: { external_id },
     });
   }
+
+
+  async registerUserInCampaign(external_id: string, idUsuario: number) {
+    console.log(external_id, idUsuario);
+    const userExists = await this.prisma.usuario.findUnique({
+      where: { id: idUsuario },
+      
+    });
+
+  
+    if (!userExists) {
+      throw new BadRequestException('El usuario no existe.');
+    }
+  
+    const campaignExists = await this.prisma.campana.findUnique({
+      where: { external_id: external_id },
+    });
+  
+    if (!campaignExists) {
+      throw new BadRequestException('La campaña no existe.');
+    }
+  
+    return this.prisma.usuarioCampana.create({
+      data: {
+        Usuario: {
+          connect: { id: idUsuario },
+        },
+        Campana: {
+          connect: { external_id: external_id },
+        },
+      },
+      include: {
+        Usuario: true,
+        Campana: true,
+      },
+    });
+  }
+  
+
 }
+
+
 
 
 

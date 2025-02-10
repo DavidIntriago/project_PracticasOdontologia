@@ -12,23 +12,29 @@ export class CampaignController {
     return this.campaignService.create(createCampaignDto);
   }
 
+  @Post("/registry/:external_id")
+  registerUserInCampaign(@Param('external_id') id: string, @Body("idUsuario") idUsuario: number) {
+    return this.campaignService.registerUserInCampaign(id, idUsuario);
+    }
+
   @Get()
   findAll() {
     return this.campaignService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.campaignService.findOne(+id);
+  @Get(':external_id')
+  findOne(@Param('external_id') id: string) {
+    return this.campaignService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCampaignDto: UpdateCampaignDto) {
-    return this.campaignService.update(+id, updateCampaignDto);
+  @Patch(':external_id')
+  update(@Param('external_id') id: string, @Body() updateCampaignDto: UpdateCampaignDto) {
+    return this.campaignService.update(id, updateCampaignDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.campaignService.remove(+id);
+  @Delete(':external_id')
+  remove(@Param('external_id') id: string) {
+    return this.campaignService.remove(id);
   }
+
 }

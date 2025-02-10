@@ -12,21 +12,22 @@ export class CitaService {
   create(createCitaDto: CreateCitaDto) {
     return this.prisma.cita.create({
       data: createCitaDto,
-      include: {
+      /*include: {
         Usuario: true,
         Servicio: true,
 
       }
+        */
     });
   }
 
   findAll() {
     return this.prisma.cita.findMany(
       {
-        include: {
+        /*include: {
           Usuario: true,
           Servicio: true,
-        }
+        }*/
       }
     );
 
