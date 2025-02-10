@@ -19,23 +19,29 @@ export class UsersController {
     return this.usersService.asignarCamapana(parseInt(id), +idCampana);
   }
 
-  @Get()
-  findAll() {
-    return this.usersService.findAll();
+  @Get("students")
+  findAllStudents() {
+    return this.usersService.findAllStudents();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  @Get("users")
+  findAllUsers() {
+    return this.usersService.findAllUsers();
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+
+  @Get(':external_id')
+  findOne(@Param('external_id') id: string) {
+    return this.usersService.findOne(id);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  @Patch(':external_id')
+  update(@Param('external_id') external_id: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.usersService.update(external_id, updateUserDto);
+  }
+
+  @Delete(':external_id')
+  remove(@Param('external_id') id: string) {
+    return this.usersService.remove(id);
   }
 }

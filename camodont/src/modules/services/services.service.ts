@@ -22,23 +22,23 @@ export class ServicesService {
     return this.prisma.servicio.findMany()
   }
 
-  findOne(id: number) {
+  findOne(external_id: string) {
     return this.prisma.servicio.findUniqueOrThrow({
-      where: {id}
+      where: {external_id: external_id}
     })
   }
 
-  update(id: number, updateServiceDto: UpdateServiceDto) {
+  update(external_id: string, updateServiceDto: UpdateServiceDto) {
     return this.prisma.servicio.update({
-      where: {id},
+      where: {external_id: external_id},
       data: updateServiceDto
     })
 
   }
 
-  remove(id: number) {
+  remove(external_id: string) {
     return this.prisma.servicio.delete({
-      where: {id}
+      where: {external_id: external_id}
     })
   }
 }
