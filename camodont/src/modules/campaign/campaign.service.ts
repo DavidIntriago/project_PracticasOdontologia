@@ -157,8 +157,9 @@ export class CampaignService {
           Campana: true,
         },
       });
-  
-      await prisma.campana.update({
+      if (userExists.idRol === 3) {
+        if (campaignExists.numeroVacantes > 0) {
+          await prisma.campana.update({
         where: { external_id },
         data: {
           numeroVacantes: {
@@ -168,7 +169,14 @@ export class CampaignService {
       });
   
       return userCampaign;
-    });
+        }else{
+          throw new BadRequestException('La campaña no tiene vacantes disponibles.');
+        }
+      }
+        
+      });
+
+      
   }
   
 
