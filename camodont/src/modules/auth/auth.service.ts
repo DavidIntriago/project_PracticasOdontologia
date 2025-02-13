@@ -25,7 +25,26 @@ constructor (private prisma: PrismaService) {}
     if (!isMatch) {
       return { error: 'Clave incorrecta' };
     }else{
-    return usuario;
+      const token_data = {
+        external_id: usuario.external_id,
+        idRol: usuario.idRol,
+        check: true,
+      };
+      console.log(token_data);
+      require('dotenv').config();
+      const key = process.env.KEY_JWT;
+      console.log(key);
+      const jwt = require('jsonwebtoken').sign(token_data, key,
+      {expiresIn: '1h'});
+      console.log(jwt);
+     
+      
+      return { token: jwt,
+        idRol: usuario.idRol,
+        external_id: usuario.external_id,
+        
+      };
+
 
   }
   }
