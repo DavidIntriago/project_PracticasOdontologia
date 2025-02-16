@@ -17,8 +17,12 @@ import {post_api} from "../hooks/Conexion";
 import { save } from "../hooks/SessionUtil";
 import { useRouter } from "next/navigation";
 
-const Login = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure(); 
+type LoginProps = {
+  isOpen: boolean;
+  onClose: () => void;
+};
+
+const Login = ({isOpen, onClose}: LoginProps) => {
   const [correo, setcorreo] = useState("");
   const [clave, setclave] = useState("");
   const router = useRouter();
@@ -56,18 +60,6 @@ const Login = () => {
 
   return (
     <>
-      <Button
-        fontSize={"sm"}
-        fontWeight={600}
-        color={"white"}
-        bg={"teal.400"}
-        onClick={onOpen} // Abre el modal
-        _hover={{ bg: "teal.500" }}
-      >
-        Iniciar Sesión
-      </Button>
-
-      {/* Modal de Login */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>

@@ -24,7 +24,7 @@ import Login from './Login'
 import { get } from '../hooks/SessionUtil'
 
 export default function NavBar() {
-  const { isOpen, onToggle } = useDisclosure()
+  const { isOpen, onToggle, onOpen, onClose } = useDisclosure()
 
   return (
     <Box>
@@ -70,10 +70,18 @@ export default function NavBar() {
           <Button as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'} href={'https://twitter.com'}>
             Registrarse
           </Button>
-          <Login />
+          <Button fontSize={"sm"}
+        fontWeight={600}
+        color={"white"}
+        bg={"teal.400"}
+        onClick={onOpen} // Abre el modal
+        _hover={{ bg: "teal.500" }}>
+            Iniciar Sesion
+          </Button>
         </Stack>
       </Flex>
-
+      <Login isOpen={isOpen} onClose={onClose} />
+ 
       <Collapse in={isOpen} animateOpacity>
         <MobileNav />
       </Collapse>
