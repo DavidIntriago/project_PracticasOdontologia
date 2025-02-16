@@ -49,11 +49,13 @@ export default function NavBar() {
             aria-label={'Toggle Navigation'}
           />
         </Flex>
-        <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
+        <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }} >
           <Text
             textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
             fontFamily={'heading'}
-            color={useColorModeValue('teal.600', 'white')}>
+            color={useColorModeValue('teal.600', 'white')}
+            >
+              
             CAMODO
           </Text>
 

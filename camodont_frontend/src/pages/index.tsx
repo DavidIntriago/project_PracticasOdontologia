@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/react';
 import type { NextPage } from 'next';
 import ContactInfo from '../../components/ContactInfo';
 import NavBar from '../components/NavBar';
-import Hero from '../../components/Hero';
+import Hero from '../components/Hero';
 import Stats from '../../components/Stats';
 import FAQ from '../../components/Faq';
 import Testimonials from '../../components/Testimonials';

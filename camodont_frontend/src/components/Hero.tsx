@@ -13,10 +13,14 @@ import {
   createIcon,
   IconProps,
   useColorModeValue,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { IoMdOptions } from 'react-icons/io';
+import Login from './Login';
 
 export default function Hero() {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
   return (
     <Container maxW={'7xl'}>
       <Stack
@@ -63,12 +67,13 @@ export default function Hero() {
               px={6}
               colorScheme={'teal'}
               bg={'teal.400'}
+              onClick={onOpen}
               _hover={{ bg: 'teal.500' }}
             >
-              <Link href='#BookAppointment'>
                 Reservar Cita
-              </Link>
             </Button>
+            <Login isOpen={isOpen} onClose={onClose} />
+
             <Button
               rounded={'full'}
               size={'lg'}
