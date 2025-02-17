@@ -1,5 +1,3 @@
-import { NextResponse } from "next/server";
-import { headers } from "../../next.config";
 
 let URL = "http://localhost:4000/api";
 

@@ -22,6 +22,7 @@ import {
 } from '@chakra-ui/icons'
 import Login from './Login'
 import { get } from '../hooks/SessionUtil'
+import Register from './Register'
 
 export default function NavBar() {
   const { isOpen, onToggle, onOpen, onClose } = useDisclosure()
@@ -69,7 +70,7 @@ export default function NavBar() {
           justify={'flex-end'}
           direction={'row'}
           spacing={6}>
-          <Button as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'} href={'https://twitter.com'}>
+          <Button as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'} onClick={onOpen}>
             Registrarse
           </Button>
           <Button fontSize={"sm"}
@@ -83,6 +84,8 @@ export default function NavBar() {
         </Stack>
       </Flex>
       <Login isOpen={isOpen} onClose={onClose} />
+      <Register isOpen={isOpen} onClose={onClose} />
+      
  
       <Collapse in={isOpen} animateOpacity>
         <MobileNav />
