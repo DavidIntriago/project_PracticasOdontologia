@@ -23,9 +23,17 @@ import {
 import Login from './Login'
 import { get } from '../hooks/SessionUtil'
 import Register from './Register'
+import { use, useState } from 'react'
 
 export default function NavBar() {
+  type ModalType = "login" | "register" | null;
+
   const { isOpen, onToggle, onOpen, onClose } = useDisclosure()
+  const [typeModal, setTypeModal] = useState<ModalType>(null);
+  
+
+  const modalOpen = (type: 'login' | 'register') => setTypeModal(type);
+  const modalClose = () => setTypeModal(null);
 
   return (
     <Box>
@@ -70,21 +78,22 @@ export default function NavBar() {
           justify={'flex-end'}
           direction={'row'}
           spacing={6}>
-          <Button as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'} onClick={onOpen}>
+          <Button as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'} onClick={() => modalOpen("register")}>
             Registrarse
           </Button>
           <Button fontSize={"sm"}
         fontWeight={600}
         color={"white"}
         bg={"teal.400"}
-        onClick={onOpen} // Abre el modal
+        onClick={() => modalOpen("login")}
         _hover={{ bg: "teal.500" }}>
             Iniciar Sesion
           </Button>
         </Stack>
       </Flex>
-      <Login isOpen={isOpen} onClose={onClose} />
-      <Register isOpen={isOpen} onClose={onClose} />
+
+      {typeModal === 'login' && <Login isOpen={typeModal === 'login'} onClose={modalClose} />}
+      {typeModal === 'register' && <Register isOpen={typeModal === 'register'} onClose={modalClose} />}
       
  
       <Collapse in={isOpen} animateOpacity>
