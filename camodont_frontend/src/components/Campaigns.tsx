@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Button, Card, CardBody, Divider, Heading, Stack, Text } from '@chakra-ui/react';
 import { arEG, tr } from 'date-fns/locale';
 import { get_api } from '../hooks/Conexion';
 
@@ -7,7 +7,7 @@ const Campaigns = () => {
   const [campaigns, setCampaigns] = useState([]);
 
   useEffect(() => {
-    // Simulación de una petición a una API
+
     const fetchCampaigns = async () => {
       try {
         const apiCampaigns = await get_api("campaign");
@@ -24,18 +24,59 @@ const Campaigns = () => {
     fetchCampaigns();
   }, []);
 
+ 
   return (
-    <Box>
-      <Text fontSize="xl" mb={4}>Gestión de Campañas</Text>
+    <Box p={6}>
+      <Heading size="lg" mb={4} color="teal.700">
+        Gestión de Campañas
+      </Heading>
+
       {campaigns.length > 0 ? (
-        campaigns.map((campaign, index) => (
-          <Box key={index} p={3} bg="white" mb={2} borderRadius="md" boxShadow="sm">
-            <Text fontWeight="bold">{campaign.nombre}</Text>
-            <Text>{campaign.numeroVacantes}</Text>
-          </Box>
-        ))
+        <Stack spacing={4}>
+          {campaigns.map((campaign, index) => (
+            <Card key={index} bg="white" boxShadow="md" borderRadius="lg" p={4}>
+              <CardBody>
+                <Heading size="md" color="teal.800" mb={2}>
+                  {campaign.nombre}
+                </Heading>
+                <Text fontSize="sm" color="gray.600">
+                  <strong>Inicio:</strong> {campaign.fechaInicio}
+                </Text>
+                <Text fontSize="sm" color="gray.600">
+                  <strong>Fin:</strong> {campaign.fechaFin}
+                </Text>
+                <Text fontSize="sm" color={campaign.estado === "Activa" ? "green.500" : "red.500"}>
+                  <strong>Estado:</strong> {campaign.estado}
+                </Text>
+
+                {campaign.Servicio && campaign.Servicio.length > 0 ? (
+                  <Box mt={3}>
+                    <Text fontWeight="bold" fontSize="sm" color="gray.700">Servicios:</Text>
+                    <Stack spacing={1} ml={2}>
+                      {campaign.Servicio.map((servicio, i) => (
+                        <Text key={i} fontSize="sm" color="gray.600">
+                          - {servicio.nombre}
+                        </Text>
+                      ))}
+                    </Stack>
+                  </Box>
+                ) : (
+                  <Text fontSize="sm" color="gray.500" mt={2}>
+                    No hay servicios asociados.
+                  </Text>
+                )}
+
+                <Divider my={3} />
+
+                <Button size="sm" colorScheme="teal" variant="outline">
+                  Solicitar Consulta
+                </Button>
+              </CardBody>
+            </Card>
+          ))}
+        </Stack>
       ) : (
-        <Text color="gray.500">No hay campañas disponibles.</Text>
+        <Text color="gray.500" fontSize="md">No hay campañas disponibles.</Text>
       )}
     </Box>
   );
