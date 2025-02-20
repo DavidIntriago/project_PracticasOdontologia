@@ -3,6 +3,8 @@ import { CreateCampaignDto } from './dto/create-campaign.dto';
 import { UpdateCampaignDto } from './dto/update-campaign.dto';
 import { PrismaService } from 'src/db/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
+import { format } from 'date-fns';
+
 
 @Injectable()
 export class CampaignService {
@@ -66,14 +68,20 @@ export class CampaignService {
   }
 
 
-  findAll() {
-    return this.prisma.campana.findMany({
+  async findAll() {
+    const campaigns= await this.prisma.campana.findMany({
+      
       include: {
         Servicio: true,
         PeriodoAcademico: true,
       },
     }
     );
+    return campaigns.map(campaign => ({
+      ...campaign,
+      fechaInicio: format(new Date(campaign.fechaInicio), 'dd-MM-yyyy'),
+      fechaFin: format(new Date(campaign.fechaFin), 'dd-MM-yyyy'),
+    }));
 
   }
 
