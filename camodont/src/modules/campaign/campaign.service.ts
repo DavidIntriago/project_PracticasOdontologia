@@ -67,6 +67,21 @@ export class CampaignService {
     });
   }
 
+  async findOne_Services(external_id: string) {
+    const campana = await this.prisma.campana.findUnique({
+      where: { external_id },
+      include: {
+        Servicio: true,
+      },
+    });
+
+    if (!campana) {
+      throw new NotFoundException('Campaña no encontrada');
+    }
+
+    return campana.Servicio;
+  }
+
 
   async findAll() {
     const campaigns= await this.prisma.campana.findMany({
