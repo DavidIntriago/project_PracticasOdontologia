@@ -26,6 +26,10 @@ export class CampaignController {
   findOne_Services(@Param('external_id') id: string) {
     return this.campaignService.findOne_Services(id);
   }
+  @Get(':external_id/students')
+  getStudents(@Param('external_id') id: string) {
+    return this.campaignService.getStudentsInCampaign(id);
+  }
 
   @Get(':external_id')
   findOne(@Param('external_id') id: string) {

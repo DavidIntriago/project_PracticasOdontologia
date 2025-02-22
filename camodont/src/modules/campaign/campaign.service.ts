@@ -201,15 +201,34 @@ export class CampaignService {
 
       
   }
+
+  async getStudentsInCampaign(external_id: string) {
+    console.log(external_id);
+  
+  
+    const campaignExists = await this.prisma.campana.findUnique({
+      where: { external_id },
+    });
+  
+    if (!campaignExists) {
+      throw new BadRequestException('La campaña no existe.');
+    }
+
+    return this.prisma.usuarioCampana.findMany({
+      where: {
+        Campana: { external_id },
+      },
+      include: {
+        Usuario: true,
+      },
+    });
+    
   
 
-
-
+ 
+  }
 
 }
-
-
-
 
 
 
