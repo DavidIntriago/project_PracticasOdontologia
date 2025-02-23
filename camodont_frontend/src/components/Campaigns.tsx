@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, Card, CardBody, Divider, Heading, Stack, Text } from '@chakra-ui/react';
-import { arEG, tr } from 'date-fns/locale';
+import { save } from "../hooks/SessionUtil";
 import { get_api } from '../hooks/Conexion';
+import RequestAppointmentModal from './RegisterCita';
+
 
 const Campaigns = () => {
   const [campaigns, setCampaigns] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+
 
   useEffect(() => {
 
@@ -68,9 +73,10 @@ const Campaigns = () => {
 
                 <Divider my={3} />
 
-                <Button size="sm" colorScheme="teal" variant="outline">
+                <Button size="sm" colorScheme="teal" variant="outline" onClick={() => {save("campaign", campaign.external_id); setIsModalOpen(true)}}>
                   Solicitar Consulta
                 </Button>
+                <RequestAppointmentModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}/>
               </CardBody>
             </Card>
           ))}
