@@ -15,12 +15,32 @@ import {
 } from "@chakra-ui/react";
 import { get_api, post_api } from "../hooks/Conexion";
 import { save, get } from "../hooks/SessionUtil";
-import { useRouter } from "next/navigation";
-import { tr } from "date-fns/locale";
 
-const RequestAppointmentModal = ({ isOpen, onClose }) => {
-    const [services, setServices] = useState([]);
-    const [students, setStudents] = useState([]);
+type ModalProp = {
+    isOpen: boolean;
+    onClose: () => void;
+  };
+
+  interface Usuario {
+    Usuario: {
+        id: number;
+        nombre: string;
+        apellido: string;
+    };
+}
+
+interface Servicio {
+    id: number;
+    nombre: string;
+}
+
+    
+
+
+
+const RequestAppointmentModal = ({ isOpen, onClose }: ModalProp) => {
+    const [services, setServices] = useState<Servicio[]>([]);
+    const [students, setStudents] = useState<Usuario[]>([]);
     const [service, setService] = useState("");
     const [date, setDate] = useState("");
     const [place, setPlace] = useState("");
