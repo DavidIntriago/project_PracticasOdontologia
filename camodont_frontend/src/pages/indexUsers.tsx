@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Flex, Text, Avatar, IconButton, Button, VStack } from '@chakra-ui/react';
 import { HamburgerIcon, CalendarIcon, ChatIcon, ArrowRightIcon } from '@chakra-ui/icons';
 import Campaigns from '../components/Campaigns';
+import AppointmentsList from '../components/AppointmentsList';
 
 // Componentes de contenido simulados
 const Campañas = () => <Text fontSize="xl">📢 Aquí se gestionan las campañas.</Text>;
@@ -36,7 +37,7 @@ const IndexUsers = () => {
       case 'Campañas':
         return <Campaigns />;
       case 'Citas':
-        return <Citas />;
+        return <AppointmentsList />;
       case 'Salir':
         return <Salir />;
       default:
