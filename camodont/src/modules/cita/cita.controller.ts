@@ -22,6 +22,11 @@ export class CitaController {
     return this.citaService.findOne(+id);
   }
 
+  @Get('paciente/:external_id')
+  findForPatient(@Param('external_id') id: string) {
+    return this.citaService.findForPatient(id);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCitaDto: UpdateCitaDto) {
     return this.citaService.update(+id, updateCitaDto);

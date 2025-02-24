@@ -70,13 +70,40 @@ export class CitaService {
   findAll() {
     return this.prisma.cita.findMany(
       {
-        /*include: {
-          Usuario: true,
-          Servicio: true,
-        }*/
+        include: {
+          campana: true,
+          servicio: true,
+          dentista: true,
+          paciente: true,
+        },
       }
     );
 
+  }
+
+  findForPatient(external_id: string) {
+    return this.prisma.$transaction(async (prisma) => {
+      const paciente = await prisma.usuario.findUnique({
+        where: { external_id },
+      });
+  
+      if (!paciente) {
+        throw new Error('Paciente no encontrado');
+      }
+  
+      return prisma.cita.findMany({
+        where: {
+          pacienteId: paciente.id,
+        },
+        include: {
+          campana: true,
+          servicio: true,
+          dentista: true,
+          paciente: true,
+        },
+      });
+    }
+    );
   }
 
   findOne(id: number) {
