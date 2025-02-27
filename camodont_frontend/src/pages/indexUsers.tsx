@@ -3,18 +3,28 @@ import { Box, Flex, Text, Avatar, IconButton, Button, VStack } from '@chakra-ui/
 import { HamburgerIcon, CalendarIcon, ChatIcon, ArrowRightIcon } from '@chakra-ui/icons';
 import Campaigns from '../components/Campaigns';
 import AppointmentsList from '../components/AppointmentsList';
+import { set } from 'date-fns';
+import { get } from '../hooks/SessionUtil';
 
-// Componentes de contenido simulados
-const Campañas = () => <Text fontSize="xl">📢 Aquí se gestionan las campañas.</Text>;
-const Citas = () => <Text fontSize="xl">📆 Aquí se gestionan las citas.</Text>;
+
 const Salir = () => <Text fontSize="xl" color="red.600">🔴 Cerrando sesión...</Text>;
 
 const IndexUsers = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentTime, setCurrentTime] = useState('');
   const [selectedMenu, setSelectedMenu] = useState('Bienvenida');
+  const [role, setRole] = useState<string | null>(null);
 
   useEffect(() => {
+    const fetchRole = async () => {
+      const rol = get('rol');
+      setRole(rol);
+    }
+    fetchRole();
+  
+  
+   
+
     const interval = setInterval(() => {
       const now = new Date();
       const time = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -26,11 +36,22 @@ const IndexUsers = () => {
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
-  const menuItems = [
-    { icon: <CalendarIcon />, label: 'Campañas' },
-    { icon: <ChatIcon />, label: 'Citas' },
-    { icon: <ArrowRightIcon />, label: 'Salir' }
-  ];
+  const menuItems = () => {
+    if (role === "3") {
+      return [
+        { icon: <ChatIcon />, label: 'Citas' },
+        { icon: <ArrowRightIcon />, label: 'Salir' }
+      ];
+    }else{
+      return [
+        { icon: <CalendarIcon />, label: 'Campañas' },
+        { icon: <ChatIcon />, label: 'Citas' },
+        { icon: <ArrowRightIcon />, label: 'Salir' }
+      ];
+    }
+  }
+
+  
 
   const renderContent = () => {
     switch (selectedMenu) {
@@ -67,7 +88,7 @@ const IndexUsers = () => {
 
         {/* Menú dinámico */}
         <VStack spacing={6} align="stretch">
-          {menuItems.map((item, index) => (
+          {menuItems().map((item, index) => (
             <Button
               key={index}
               leftIcon={item.icon}
