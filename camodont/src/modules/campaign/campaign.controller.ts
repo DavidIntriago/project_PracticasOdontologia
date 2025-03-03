@@ -31,6 +31,11 @@ export class CampaignController {
     return this.campaignService.getStudentsInCampaign(id);
   }
 
+  @Get('/estatus')
+  getEstatus() {
+    return this.campaignService.findCampaingOpen();
+  }
+
   @Get(':external_id')
   findOne(@Param('external_id') id: string) {
     return this.campaignService.findOne(id);

@@ -67,6 +67,24 @@ export class CampaignService {
     });
   }
 
+  async findCampaingOpen() {
+    const campaigns = await this.prisma.campana.findMany({
+      where: {
+        estado: 'ACTIVO',
+      },
+      include: {
+        Servicio: true,
+        PeriodoAcademico: true,
+      },
+    });
+
+    return campaigns.map(campaign => ({
+      ...campaign,
+      fechaInicio: format(new Date(campaign.fechaInicio), 'dd-MM-yyyy'),
+      fechaFin: format(new Date(campaign.fechaFin), 'dd-MM-yyyy'),
+    }));
+  }
+
   async findOne_Services(external_id: string) {
     const campana = await this.prisma.campana.findUnique({
       where: { external_id },
