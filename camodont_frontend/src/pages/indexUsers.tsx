@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Flex, Text, Avatar, IconButton, Button, VStack } from '@chakra-ui/react';
 import { HamburgerIcon, CalendarIcon, ChatIcon, ArrowRightIcon } from '@chakra-ui/icons';
-import Campaigns from '../components/Campaigns';
+import Services from '../components/Services';
 import AppointmentsList from '../components/AppointmentsList';
-import { set } from 'date-fns';
-import { get } from '../hooks/SessionUtil';
+import { borrarSesion, get } from '../hooks/SessionUtil';
+import { useRouter } from "next/navigation";
 
 
-const Salir = () => <Text fontSize="xl" color="red.600">🔴 Cerrando sesión...</Text>;
 
 const IndexUsers = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,14 +15,11 @@ const IndexUsers = () => {
   const [role, setRole] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchRole = async () => {
-      const rol = get('rol');
+    const fetchRole =  () => {
+      const rol =  get('rol');
       setRole(rol);
     }
     fetchRole();
-  
-  
-   
 
     const interval = setInterval(() => {
       const now = new Date();
@@ -37,12 +33,12 @@ const IndexUsers = () => {
   const toggleMenu = () => setIsOpen(!isOpen);
 
   const menuItems = () => {
-    if (role === "3") {
+    if (role === "2") {
       return [
         { icon: <ChatIcon />, label: 'Citas' },
         { icon: <ArrowRightIcon />, label: 'Salir' }
       ];
-    }else{
+    } else {
       return [
         { icon: <CalendarIcon />, label: 'Campañas' },
         { icon: <ChatIcon />, label: 'Citas' },
@@ -50,19 +46,22 @@ const IndexUsers = () => {
       ];
     }
   }
-
-  
+  const Salir = () => {
+    const router = useRouter();
+    borrarSesion();
+    router.push("/");
+    return null;
+  }
 
   const renderContent = () => {
     switch (selectedMenu) {
       case 'Campañas':
-        return <Campaigns />;
+        return <Services />;
       case 'Citas':
         return <AppointmentsList />;
       case 'Salir':
-        return <Salir />;
-      default:
-        return <Text fontSize="xl">🏠 Bienvenido al sistema de gestión de odontología.</Text>;
+        return Salir();
+      
     }
   };
 
@@ -120,7 +119,6 @@ const IndexUsers = () => {
           <Avatar name="Usuario" src="https://via.placeholder.com/150" size="md" />
         </Flex>
 
-        {/* Contenido dinámico */}
         <Box p={6}>
           {renderContent()}
         </Box>

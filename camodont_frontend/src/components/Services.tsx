@@ -13,7 +13,7 @@ interface Campaign {
   external_id: string;
 }
 
-const Campaigns = () => {
+const Services = () => {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -33,7 +33,7 @@ const Campaigns = () => {
   return (
     <Box p={6}>
       <Heading size="lg" mb={6} color="teal.700" textAlign="center">
-        Campañas Activas
+        Servicios Disponibles
       </Heading>
 
       {campaigns.length > 0 ? (
@@ -93,4 +93,4 @@ const Campaigns = () => {
   );
 };
 
-export default Campaigns;
+export default Services;
