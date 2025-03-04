@@ -7,6 +7,7 @@ import RequestAppointmentModal from './RegisterCita';
 
 
 const Services = () => {
+  const [campaign, setCampaign] = useState({});
   const [services, setservices] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -15,8 +16,10 @@ const Services = () => {
       try {
         const apiservices = await get_api("campaign/status");
         console.log(apiservices);
-        console.log(apiservices[0].Servicio);
-        setservices(apiservices[0].Servicio);
+        setCampaign(apiservices);
+        setservices(apiservices.Servicio);
+        console.log(campaign);
+        console.log(services);
       } catch (error) {
         console.error("Error al obtener las campañas:", error);
       }
@@ -52,7 +55,8 @@ const Services = () => {
                   <Divider my={3} />
 
                   <Center>
-                    <Button size="sm" colorScheme="teal" variant="solid" onClick={() => { save("service", service.external_id); setIsModalOpen(true); }}>
+                    <Button size="sm" colorScheme="teal" variant="solid" onClick={() => { save("service", service.external_id);
+                      save("campaign", campaign.external_id), setIsModalOpen(true); }}>
                       Solicitar Consulta
                     </Button>
                   </Center>

@@ -68,7 +68,7 @@ export class CampaignService {
   }
 
   async findCampaingOpen() {
-    const campaigns = await this.prisma.campana.findMany({
+    const campaign = await this.prisma.campana.findFirst({
       where: {
         estado: 'ACTIVO',
       },
@@ -78,12 +78,8 @@ export class CampaignService {
       },
     });
 
-    return campaigns.map(campaign => ({
-      ...campaign,
-      fechaInicio: format(new Date(campaign.fechaInicio), 'dd-MM-yyyy'),
-      fechaFin: format(new Date(campaign.fechaFin), 'dd-MM-yyyy'),
-    }));
-  }
+    return campaign
+    }
 
   async findOne_Services(external_id: string) {
     const campana = await this.prisma.campana.findUnique({

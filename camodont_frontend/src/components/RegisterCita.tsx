@@ -39,7 +39,6 @@ interface Servicio {
 
 
 const RequestAppointmentModal = ({ isOpen, onClose }: ModalProp) => {
-    const [services, setServices] = useState<Servicio[]>([]);
     const [students, setStudents] = useState<Usuario[]>([]);
     const [service, setService] = useState("");
     const [date, setDate] = useState("");
@@ -53,12 +52,9 @@ const RequestAppointmentModal = ({ isOpen, onClose }: ModalProp) => {
         const fetchServices = async () => {
             try {
                 var campaign = get("campaign"); 
-                if (!campaign) return;
-                const getcampana = await get_api(`campaign/${campaign}`);
-                setCampaign(getcampana.id);
-                setServices([]); 
-                const storedServices = await get_api(`campaign/${campaign}/services`);
-                setServices(storedServices);
+                var service = get("service"); 
+                setCampaign(campaign);
+                setService(service);
                 const storedStudents = await get_api(`campaign/${campaign}/students`);
                 setStudents(storedStudents);
                 console.log(storedStudents)
@@ -74,14 +70,14 @@ const RequestAppointmentModal = ({ isOpen, onClose }: ModalProp) => {
     
 
     const handleSubmit = async () => {
-        const externalPaciente = get("id");
-        const paciente = await get_api(`users/${externalPaciente}`);
+        const paciente = get("id");
         console.log(paciente);
         if (!service || !date || !place || !student) {
             alert("Por favor completa todos los campos");
             return;
         }
-        const appointmentData = { fecha: date, hora: hour, lugar: place, estado: "PENDIENTE", idCampana: campaign, idServicio: parseInt(service), dentistaId: parseInt(student), pacienteId: paciente.id };
+        const appointmentData = { fecha: date, hora: hour, lugar: place, estado: "PENDIENTE", idCampana: campaign, idServicio: service, dentistaId: student, pacienteId: paciente };
+        console.log(appointmentData);
 
     
         try {
@@ -110,21 +106,7 @@ const RequestAppointmentModal = ({ isOpen, onClose }: ModalProp) => {
                     <ModalHeader>Solicitar Cita</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        <FormControl mb={3}>
-                            <FormLabel>Servicio</FormLabel>
-                            <Select
-                                placeholder="Selecciona un servicio"
-                                value={service}
-                                onChange={(e) => setService(e.target.value)}
-                            >
-                                {services.map((s) => (
-                                    <option key={s.id} value={s.id}>
-                                        {s.nombre}
-                                    </option>
-                                ))}
-                            </Select>
-                        </FormControl>
-
+                      
                         <FormControl mb={3}>
                             <FormLabel>Fecha</FormLabel>
                             <Input
