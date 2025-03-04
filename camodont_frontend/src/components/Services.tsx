@@ -4,30 +4,24 @@ import { save } from "../hooks/SessionUtil";
 import { get_api } from '../hooks/Conexion';
 import RequestAppointmentModal from './RegisterCita';
 
-interface Campaign {
-  nombre: string;
-  fechaInicio: string;
-  fechaFin: string;
-  estado: string;
-  Servicio?: { nombre: string }[];
-  external_id: string;
-}
+
 
 const Services = () => {
-  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+  const [services, setservices] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    const fetchCampaigns = async () => {
+    const fetchservices = async () => {
       try {
-        const apiCampaigns = await get_api("campaign");
-        console.log(apiCampaigns);
-        setCampaigns(apiCampaigns);
+        const apiservices = await get_api("campaign/status");
+        console.log(apiservices);
+        console.log(apiservices[0].Servicio);
+        setservices(apiservices[0].Servicio);
       } catch (error) {
         console.error("Error al obtener las campañas:", error);
       }
     };
-    fetchCampaigns();
+    fetchservices();
   }, []);
 
   return (
@@ -36,46 +30,29 @@ const Services = () => {
         Servicios Disponibles
       </Heading>
 
-      {campaigns.length > 0 ? (
+      {services.length > 0 ? (
         <Center>
           <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={6} maxW="1000px">
-            {campaigns.map((campaign, index) => (
+            {services.map((service, index) => (
               <Card key={index} bg="white" boxShadow="lg" borderRadius="xl" p={4} _hover={{ transform: "scale(1.03)", transition: "0.3s" }}>
                 <CardBody>
                   <Heading size="md" color="teal.800" mb={2} textAlign="center">
-                    {campaign.nombre}
+                    {service.nombre}
                   </Heading>
                   <Text fontSize="sm" color="gray.600">
-                    <strong>Inicio:</strong> {campaign.fechaInicio}
+                    {service.descripcion}
                   </Text>
                   <Text fontSize="sm" color="gray.600">
-                    <strong>Fin:</strong> {campaign.fechaFin}
+                    <strong>Duracion Estimada:</strong> {service.duracion} minutos
                   </Text>
-                  <Text fontSize="sm" color={campaign.estado === "Activa" ? "green.500" : "red.500"}>
-                    <strong>Estado:</strong> {campaign.estado}
-                  </Text>
+                 
 
-                  {campaign.Servicio && campaign.Servicio.length > 0 ? (
-                    <Box mt={3}>
-                      <Text fontWeight="bold" fontSize="sm" color="gray.700">Servicios:</Text>
-                      <Stack spacing={1} ml={2}>
-                        {campaign.Servicio.map((servicio, i) => (
-                          <Text key={i} fontSize="sm" color="gray.600">
-                            - {servicio.nombre}
-                          </Text>
-                        ))}
-                      </Stack>
-                    </Box>
-                  ) : (
-                    <Text fontSize="sm" color="gray.500" mt={2}>
-                      No hay servicios asociados.
-                    </Text>
-                  )}
+                  
 
                   <Divider my={3} />
 
                   <Center>
-                    <Button size="sm" colorScheme="teal" variant="solid" onClick={() => { save("campaign", campaign.external_id); setIsModalOpen(true); }}>
+                    <Button size="sm" colorScheme="teal" variant="solid" onClick={() => { save("service", service.external_id); setIsModalOpen(true); }}>
                       Solicitar Consulta
                     </Button>
                   </Center>

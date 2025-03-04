@@ -31,7 +31,7 @@ export class CampaignController {
     return this.campaignService.getStudentsInCampaign(id);
   }
 
-  @Get('/estatus')
+  @Get('/status')
   getEstatus() {
     return this.campaignService.findCampaingOpen();
   }
