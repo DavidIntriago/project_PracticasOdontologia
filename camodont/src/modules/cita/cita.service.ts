@@ -15,50 +15,62 @@ export class CitaService {
     return this.prisma.$transaction(async (prisma) => {
       
       const campana = await prisma.campana.findUnique({
-        where: { id: idCampana },
+        where: { external_id: idCampana },
       });
     
       if (!campana) {
         throw new Error('Campaña no encontrada');
       }
+
+      const servicio = await prisma.servicio.findUnique({
+        where: { external_id: idServicio },
+      });
+
+      if (!servicio) {
+        throw new Error('Servicio no encontrado');
+      }
     
-      const paciente = await prisma.usuarioCampana.findFirst({
+      const student = await prisma.usuarioCampana.findFirst({
         where: {
-          Campana: {id: idCampana},
-          Usuario: {id: pacienteId},
+          Campana: {external_id: idCampana},
+          Usuario: {external_id: dentistaId},
         },
       });
-  
-      
     
-      if (!paciente) {
-        throw new Error('El paciente no está registrado en esta campaña.');
+      if (!student) {
+        throw new Error('El estudiante no está registrado en esta campaña.');
       }
       
+
+      const paciente = await prisma.usuario.findUnique({
+        where: { external_id: pacienteId },
+      });
+
       return prisma.cita.create({
         data: {
           ...dataCita,
           fecha: new Date(fecha),
           campana: {
             connect: {
-              id: idCampana,
+              id: campana.id,
             },
           },
           servicio: {
             connect: {
-              id: idServicio,
+              id: servicio.id,
             },
           },
           dentista: {
             connect: {
-              id: dentistaId,
+              id: student.idUsuario,
             },
           },
           paciente: {
             connect: {
-              id: pacienteId,
+              id: paciente.id,
             },
           },
+          estado: "PENDIENTE",
         },
         
       });

@@ -1,6 +1,13 @@
-import { Cita} from "@prisma/client";
 
-export type CreateCitaDto = Omit<Cita, 'id' | 'createdAt' | 'updatedAt' | 'external_id' >;
-
+export class CreateCitaDto{
+    idCampana: string;
+    idServicio: string;
+    dentistaId: string;
+    pacienteId: string;
+    fecha: Date;
+    hora: string;
+    estado: string;
+    lugar: string;
+}
 
 
