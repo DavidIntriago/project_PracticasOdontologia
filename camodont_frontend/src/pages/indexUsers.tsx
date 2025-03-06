@@ -5,21 +5,24 @@ import Services from '../components/Services';
 import AppointmentsList from '../components/AppointmentsList';
 import { borrarSesion, get } from '../hooks/SessionUtil';
 import { useRouter } from "next/navigation";
-
-
+import { get_api } from '../hooks/Conexion';
 
 const IndexUsers = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [currentTime, setCurrentTime] = useState('');
   const [selectedMenu, setSelectedMenu] = useState('Bienvenida');
   const [role, setRole] = useState<string | null>(null);
+  const [userName, setUserName] = useState('');
 
   useEffect(() => {
-    const fetchRole =  () => {
-      const rol =  get('rol');
+    const fetchUserData = async () => {
+      const rol = get('rol');
+      const externalId = get('id');
+      const nombre = await get_api(`users/${externalId}`).then((data) => data.correo);
       setRole(rol);
+      setUserName(nombre);
     }
-    fetchRole();
+    fetchUserData();
 
     const interval = setInterval(() => {
       const now = new Date();
@@ -46,6 +49,7 @@ const IndexUsers = () => {
       ];
     }
   }
+
   const Salir = () => {
     const router = useRouter();
     borrarSesion();
@@ -61,7 +65,6 @@ const IndexUsers = () => {
         return <AppointmentsList />;
       case 'Salir':
         return Salir();
-      
     }
   };
 
@@ -75,7 +78,15 @@ const IndexUsers = () => {
         p={4}
         transition="width 0.3s"
       >
-        {/* Botón hamburguesa */}
+        <Flex align="center" mb={6} direction="column" justify="center">
+          {isOpen && (
+            <>
+              <Avatar name={userName} size="lg" mb={4} />
+              <Text>{userName}</Text>
+            </>
+          )}
+        </Flex>
+
         <IconButton
           icon={<HamburgerIcon />}
           onClick={toggleMenu}
@@ -105,7 +116,6 @@ const IndexUsers = () => {
 
       {/* Área principal */}
       <Box flex={1} bg="gray.100">
-        {/* Navbar superior */}
         <Flex
           bg="white"
           p={4}
@@ -116,7 +126,6 @@ const IndexUsers = () => {
           <Text fontSize="lg" fontWeight="bold" color="teal.800">
             {currentTime}
           </Text>
-          <Avatar name="Usuario" src="https://via.placeholder.com/150" size="md" />
         </Flex>
 
         <Box p={6}>
