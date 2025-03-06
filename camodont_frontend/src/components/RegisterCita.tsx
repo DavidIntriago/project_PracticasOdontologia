@@ -51,8 +51,8 @@ const RequestAppointmentModal = ({ isOpen, onClose }: ModalProp) => {
     useEffect(() => {
         const fetchServices = async () => {
             try {
-                var campaign = get("campaign"); 
-                var service = get("service"); 
+                var campaign =  get("campaign"); 
+                var service =  get("service"); 
                 setCampaign(campaign);
                 setService(service);
                 const storedStudents = await get_api(`campaign/${campaign}/students`);
