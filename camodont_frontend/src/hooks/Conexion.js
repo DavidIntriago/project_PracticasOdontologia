@@ -55,3 +55,20 @@ export async function get_api_id(url, id) {
     console.log(error);
   }
 }
+
+export async function patch_api(url, data) {
+  try {
+    const response = await fetch(`${URL}/${url}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const res = await response.json();
+    console.log(res);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
