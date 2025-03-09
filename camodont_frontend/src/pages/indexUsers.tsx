@@ -1,36 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Flex, Text, Avatar, IconButton, Button, VStack } from '@chakra-ui/react';
+import { Box, Flex, Text, Avatar, IconButton, Button, VStack, useDisclosure } from '@chakra-ui/react';
 import { HamburgerIcon, CalendarIcon, ChatIcon, ArrowRightIcon } from '@chakra-ui/icons';
 import Services from '../components/Services';
 import AppointmentsList from '../components/AppointmentsList';
+import CompleteProfile from '../components/Profile';
 import { borrarSesion, get } from '../hooks/SessionUtil';
 import { useRouter } from "next/navigation";
-import { get_api } from '../hooks/Conexion';
 
 const IndexUsers = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const [currentTime, setCurrentTime] = useState('');
   const [selectedMenu, setSelectedMenu] = useState('Bienvenida');
   const [role, setRole] = useState<string | null>(null);
   const [userName, setUserName] = useState('');
+  const [datosIncompletos, setDatosIncompletos] = useState(false);
+  const { isOpen: isProfileOpen, onOpen, onClose } = useDisclosure();
+  const router = useRouter();
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchUserData = () => {
       const rol = get('rol');
-      const externalId = get('id');
-      const nombre = await get_api(`users/${externalId}`).then((data) => data.correo);
+      const nombre = get('nombre');
+      const apellidos = get('apellidos');
+      const telefono = get('telefono');
+
       setRole(rol);
       setUserName(nombre);
-    }
-    fetchUserData();
 
-    const interval = setInterval(() => {
-      const now = new Date();
-      const time = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      const date = now.toLocaleDateString('es-ES');
-      setCurrentTime(`${date} ${time}`);
-    }, 1000);
-    return () => clearInterval(interval);
+      if (!nombre || !apellidos || !telefono) {
+        setDatosIncompletos(true);
+        onOpen(); 
+      }
+    };
+    fetchUserData();
   }, []);
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -48,16 +49,27 @@ const IndexUsers = () => {
         { icon: <ArrowRightIcon />, label: 'Salir' }
       ];
     }
-  }
+  };
 
   const Salir = () => {
-    const router = useRouter();
     borrarSesion();
     router.push("/");
     return null;
-  }
+  };
 
   const renderContent = () => {
+    if (isProfileOpen) {
+      return (
+        <CompleteProfile
+          external_id={get("user_id")}
+          onComplete={() => {
+            setDatosIncompletos(false);
+            onClose();
+          }}
+        />
+      );
+    }
+
     switch (selectedMenu) {
       case 'Campañas':
         return <Services />;
@@ -65,6 +77,8 @@ const IndexUsers = () => {
         return <AppointmentsList />;
       case 'Salir':
         return Salir();
+      default:
+        return <Text>Bienvenido {userName}</Text>;
     }
   };
 
@@ -78,23 +92,18 @@ const IndexUsers = () => {
         p={4}
         transition="width 0.3s"
       >
-        <Flex align="center" mb={6} direction="column" justify="center">
-          {isOpen && (
-            <>
-              <Avatar name={userName} size="lg" mb={4} />
-              <Text>{userName}</Text>
-            </>
-          )}
+        <Flex align="center" direction="column" justify="center" mb={6}>
+          <IconButton
+            icon={<HamburgerIcon />}
+            onClick={toggleMenu}
+            aria-label="Toggle Menu"
+            colorScheme="teal"
+            variant="outline"
+            mb={4}
+          />
+          <Avatar name={userName} size="lg" mb={4} />
+          {isOpen && <Text>{userName}</Text>}
         </Flex>
-
-        <IconButton
-          icon={<HamburgerIcon />}
-          onClick={toggleMenu}
-          mb={6}
-          aria-label="Toggle Menu"
-          colorScheme="teal"
-          variant="outline"
-        />
 
         {/* Menú dinámico */}
         <VStack spacing={6} align="stretch">
@@ -116,18 +125,6 @@ const IndexUsers = () => {
 
       {/* Área principal */}
       <Box flex={1} bg="gray.100">
-        <Flex
-          bg="white"
-          p={4}
-          boxShadow="sm"
-          justify="space-between"
-          align="center"
-        >
-          <Text fontSize="lg" fontWeight="bold" color="teal.800">
-            {currentTime}
-          </Text>
-        </Flex>
-
         <Box p={6}>
           {renderContent()}
         </Box>
