@@ -46,7 +46,7 @@ const Login = ({isOpen, onClose}: LoginProps) => {
         alert("Bienvenid@ "+response.nombre);
 
         save("rol", response.idRol);
-        save("id", response.external_id);
+        save("external_id", response.external_id);
         router.push("/indexUsers"); 
 
         return;
