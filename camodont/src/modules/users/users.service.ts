@@ -57,10 +57,29 @@ export class UsersService {
   }
 
   update(external_id: string, updateUserDto: UpdateUserDto) {
-    return this.prisma.usuario.update({
-      where: {external_id: external_id},
-      data: updateUserDto
+    
+    try {
+      const data = this.prisma.usuario.update({
+        where: {external_id: external_id},
+        data: updateUserDto,
+        include: {
+          rol: true,
+        }
       });
+      return{
+        success: true,
+        data: data
+      }
+      
+    } catch (error) {
+      return{
+        success: false,
+        error: error
+      }
+
+      
+    }
+
   }
 
   updatePassword(external_id: string, clave: string) {
